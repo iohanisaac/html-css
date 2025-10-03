@@ -1,0 +1,22 @@
+@charset "UTF-8";
+
+body {
+    background-color: rgba(162, 159, 255, 0.651);
+    font-family: cursive;
+}
+
+h1 {
+    color: rgb(0, 6, 85);
+    text-decoration: underline;
+}
+
+h2 {
+   color: rgb(4, 0, 255);
+   text-decoration: underline;
+}
+
+h1#principal {
+    text-align: center;
+    color: rgb(0, 0, 37);
+    text-shadow: 1px 1px 1px rgb(156, 0, 187);
+}
