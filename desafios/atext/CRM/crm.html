@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>CRM Ágil | Gestão de Clientes</title>
+    <!-- Font Awesome 6 (ícones) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts: Inter + Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Poppins:wght@500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #eef2f7 0%, #d9e0e8 100%);
+            font-family: 'Inter', sans-serif;
+            padding: 2rem 1.5rem;
+            color: #1a2c3e;
+        }
+
+        /* container principal */
+        .crm-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* cabeçalho */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            gap: 1rem;
+        }
+        .logo-area h1 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 1.9rem;
+            background: linear-gradient(135deg, #1f4870, #2c6e9e);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+        }
+        .logo-area p {
+            font-size: 0.85rem;
+            color: #4a627a;
+            margin-top: 0.2rem;
+        }
+        .demo-btn {
+            background: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 60px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: #1f4870;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.03);
+            transition: all 0.2s;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid #cbdde9;
+        }
+        .demo-btn:hover {
+            background: #eef3fc;
+            border-color: #8fb5cf;
+            transform: translateY(-1px);
+        }
+
+        /* cards de estatísticas */
+        .stats-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: white;
+            flex: 1 1 180px;
+            border-radius: 28px;
+            padding: 1.2rem 1rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            transition: 0.2s;
+            border: 1px solid rgba(255,255,255,0.5);
+            backdrop-filter: blur(2px);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            background: #eef2fa;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            color: #2c6e9e;
+        }
+        .stat-info h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #0f2c3f;
+        }
+        .stat-info span {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #5b7a9a;
+        }
+
+        /* formulário e filtros */
+        .form-card {
+            background: white;
+            border-radius: 28px;
+            padding: 1.5rem 1.8rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+            transition: all 0.2s;
+        }
+        .form-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #1f4870;
+            border-left: 4px solid #2c6e9e;
+            padding-left: 12px;
+        }
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .input-group {
+            flex: 1 1 200px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .input-group label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #4f6f8f;
+        }
+        .input-group input, .input-group select {
+            padding: 10px 14px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 18px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            transition: 0.2s;
+            background: #fefefe;
+        }
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: #2c6e9e;
+            box-shadow: 0 0 0 3px rgba(44,110,158,0.2);
+        }
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+            margin-top: 8px;
+        }
+        .btn-primary, .btn-secondary, .btn-danger-light {
+            border: none;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-primary {
+            background: #1f4870;
+            color: white;
+            box-shadow: 0 2px 6px rgba(31,72,112,0.2);
+        }
+        .btn-primary:hover {
+            background: #0f3554;
+            transform: scale(0.97);
+        }
+        .btn-secondary {
+            background: #eef2f7;
+            color: #2c3e50;
+            border: 1px solid #cbdde6;
+        }
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+        .btn-danger-light {
+            background: #ffe6e5;
+            color: #b33;
+            border: 1px solid #ffcdcc;
+        }
+        .btn-danger-light:hover {
+            background: #ffd9d8;
+        }
+
+        /* filtros e busca */
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            gap: 1rem;
+        }
+        .search-box {
+            display: flex;
+            gap: 8px;
+            flex: 2;
+            min-width: 200px;
+        }
+        .search-box input {
+            flex: 1;
+            padding: 10px 16px;
+            border-radius: 40px;
+            border: 1px solid #cbdde9;
+            font-size: 0.9rem;
+        }
+        .filter-status select {
+            padding: 10px 16px;
+            border-radius: 40px;
+            border: 1px solid #cbdde9;
+            background: white;
+            font-weight: 500;
+        }
+        .clear-filters {
+            background: transparent;
+            border: none;
+            color: #4f6f8f;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        /* tabela responsiva */
+        .table-wrapper {
+            background: white;
+            border-radius: 28px;
+            padding: 0 0 0.5rem 0;
+            overflow-x: auto;
+            box-shadow: 0 8px 22px rgba(0,0,0,0.05);
+        }
+        .contact-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            min-width: 680px;
+        }
+        .contact-table th {
+            text-align: left;
+            padding: 1rem 1rem;
+            background-color: #f8fafd;
+            color: #2c3e66;
+            font-weight: 600;
+            border-bottom: 1px solid #e2edf5;
+        }
+        .contact-table td {
+            padding: 1rem 1rem;
+            border-bottom: 1px solid #ecf3f8;
+            vertical-align: middle;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-align: center;
+            background: #eef2ff;
+            color: #2c5282;
+        }
+        .status-Lead {
+            background: #fff0db;
+            color: #c97e00;
+        }
+        .status-Ativo {
+            background: #e0f7e8;
+            color: #1f7840;
+        }
+        .status-Inativo {
+            background: #ffe6e5;
+            color: #b33;
+        }
+        .action-icons i {
+            font-size: 1.1rem;
+            margin: 0 6px;
+            cursor: pointer;
+            transition: 0.1s;
+            color: #6a8aaa;
+        }
+        .action-icons i:hover {
+            transform: scale(1.1);
+        }
+        .fa-edit:hover { color: #2c6e9e; }
+        .fa-trash-alt:hover { color: #d9534f; }
+        .empty-row td {
+            text-align: center;
+            padding: 2.5rem;
+            color: #8aa0b5;
+            font-style: italic;
+        }
+        footer {
+            text-align: center;
+            font-size: 0.7rem;
+            margin-top: 2rem;
+            color: #6c86a0;
+        }
+        @media (max-width: 700px) {
+            body { padding: 1rem; }
+            .form-card { padding: 1.2rem; }
+            .stat-card { flex: 1 1 140px; }
+            .stat-info h3 { font-size: 1.4rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="crm-container">
+    <div class="header">
+        <div class="logo-area">
+            <h1><i class="fas fa-handshake" style="color:#2c6e9e; margin-right: 8px;"></i> CRM Ágil</h1>
+            <p>Gestão inteligente de relacionamento com clientes</p>
+        </div>
+        <button class="demo-btn" id="resetDemoBtn"><i class="fas fa-database"></i> Restaurar exemplos</button>
+    </div>
+
+    <!-- Cards de métricas -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-users"></i></div>
+            <div class="stat-info">
+                <h3 id="totalContacts">0</h3>
+                <span>Total Clientes</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-user-check"></i></div>
+            <div class="stat-info">
+                <h3 id="activeCount">0</h3>
+                <span>Ativos</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
+            <div class="stat-info">
+                <h3 id="leadCount">0</h3>
+                <span>Leads</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Formulário de cadastro/edição -->
+    <div class="form-card">
+        <div class="form-title">
+            <i class="fas fa-user-plus"></i> <span id="formTitleText">Novo Contato</span>
+        </div>
+        <form id="contactForm">
+            <div class="form-row">
+                <div class="input-group">
+                    <label>Nome completo *</label>
+                    <input type="text" id="name" placeholder="Ex: Ana Silva" required>
+                </div>
+                <div class="input-group">
+                    <label>E-mail *</label>
+                    <input type="email" id="email" placeholder="contato@email.com" required>
+                </div>
+                <div class="input-group">
+                    <label>Telefone</label>
+                    <input type="text" id="phone" placeholder="(11) 99999-1234">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="input-group">
+                    <label>Empresa</label>
+                    <input type="text" id="company" placeholder="Nome da empresa">
+                </div>
+                <div class="input-group">
+                    <label>Status</label>
+                    <select id="status">
+                        <option value="Lead">Lead</option>
+                        <option value="Ativo">Ativo</option>
+                        <option value="Inativo">Inativo</option>
+                    </select>
+                </div>
+                <div class="btn-group">
+                    <button type="submit" class="btn-primary" id="submitBtn"><i class="fas fa-save"></i> Adicionar</button>
+                    <button type="button" class="btn-secondary" id="cancelEditBtn"><i class="fas fa-times"></i> Cancelar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Filtros e busca -->
+    <div class="filter-bar">
+        <div class="search-box">
+            <i class="fas fa-search" style="align-self:center; color:#6f8eae;"></i>
+            <input type="text" id="searchInput" placeholder="Buscar por nome, e-mail ou empresa...">
+        </div>
+        <div class="filter-status">
+            <select id="statusFilter">
+                <option value="all">📋 Todos os status</option>
+                <option value="Lead">⭐ Leads</option>
+                <option value="Ativo">✅ Ativos</option>
+                <option value="Inativo">⛔ Inativos</option>
+            </select>
+        </div>
+        <button class="clear-filters" id="clearFiltersBtn"><i class="fas fa-undo-alt"></i> Limpar filtros</button>
+    </div>
+
+    <!-- Tabela de contatos -->
+    <div class="table-wrapper">
+        <table class="contact-table">
+            <thead>
+                <tr><th>Nome</th><th>E-mail</th><th>Telefone</th><th>Empresa</th><th>Status</th><th style="width: 90px;">Ações</th></tr>
+            </thead>
+            <tbody id="contactsTableBody">
+                <tr class="empty-row"><td colspan="6">Carregando contatos...</td></tr>
+            </tbody>
+        </table>
+    </div>
+    <footer>CRM em tempo real · Dados salvos localmente · <i class="fas fa-shield-alt"></i> persistente</footer>
+</div>
+
+<script>
+    // ---------- MODEL ----------
+    let contacts = [];
+    let editMode = false;
+    let currentEditId = null;
+
+    // Elementos DOM
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const phoneInput = document.getElementById('phone');
+    const companyInput = document.getElementById('company');
+    const statusSelect = document.getElementById('status');
+    const submitBtn = document.getElementById('submitBtn');
+    const cancelEditBtn = document.getElementById('cancelEditBtn');
+    const formTitleSpan = document.getElementById('formTitleText');
+    const contactsTableBody = document.getElementById('contactsTableBody');
+    const searchInput = document.getElementById('searchInput');
+    const statusFilter = document.getElementById('statusFilter');
+    const clearFiltersBtn = document.getElementById('clearFiltersBtn');
+    const resetDemoBtn = document.getElementById('resetDemoBtn');
+
+    // Métricas
+    const totalSpan = document.getElementById('totalContacts');
+    const activeSpan = document.getElementById('activeCount');
+    const leadSpan = document.getElementById('leadCount');
+
+    // ----- Utilitários -----
+    function saveToLocalStorage() {
+        localStorage.setItem('crm_contacts', JSON.stringify(contacts));
+    }
+
+    function loadFromLocalStorage() {
+        const stored = localStorage.getItem('crm_contacts');
+        if (stored) {
+            contacts = JSON.parse(stored);
+        } else {
+            // dados de exemplo iniciais
+            contacts = [
+                { id: 101, name: "Ana Souza", email: "ana.souza@inovatech.com", phone: "(11) 91234-5678", company: "InovaTech", status: "Ativo" },
+                { id: 102, name: "Carlos Lima", email: "carlos.lima@solucoesweb.com", phone: "(21) 98765-4321", company: "Soluções Web", status: "Lead" },
+                { id: 103, name: "Mariana Costa", email: "mariana.costa@mktdigital.com", phone: "(31) 99876-5432", company: "Marketing Digital", status: "Inativo" },
+                { id: 104, name: "Rafael Mendes", email: "rafael@nexus.com", phone: "(41) 98888-7777", company: "Nexus Group", status: "Ativo" }
+            ];
+            saveToLocalStorage();
+        }
+    }
+
+    // Atualiza cards estatísticos (com base no array completo)
+    function updateStats() {
+        const total = contacts.length;
+        const active = contacts.filter(c => c.status === "Ativo").length;
+        const leads = contacts.filter(c => c.status === "Lead").length;
+        totalSpan.innerText = total;
+        activeSpan.innerText = active;
+        leadSpan.innerText = leads;
+    }
+
+    // aplicar filtros (texto + status)
+    function getFilteredContacts() {
+        let filtered = [...contacts];
+        const searchTerm = searchInput.value.trim().toLowerCase();
+        const statusVal = statusFilter.value;
+        if (searchTerm !== "") {
+            filtered = filtered.filter(cont =>
+                cont.name.toLowerCase().includes(searchTerm) ||
+                cont.email.toLowerCase().includes(searchTerm) ||
+                (cont.company && cont.company.toLowerCase().includes(searchTerm))
+            );
+        }
+        if (statusVal !== "all") {
+            filtered = filtered.filter(cont => cont.status === statusVal);
+        }
+        return filtered;
+    }
+
+    // Renderizar tabela com contatos filtrados
+    function renderTable() {
+        const filtered = getFilteredContacts();
+        if (filtered.length === 0) {
+            contactsTableBody.innerHTML = `<tr class="empty-row"><td colspan="6"><i class="fas fa-user-slash"></i> Nenhum contato encontrado. Adicione um novo cliente.</td></tr>`;
+            return;
+        }
+        let html = '';
+        filtered.forEach(contact => {
+            const statusClass = `status-badge status-${contact.status}`;
+            html += `
+                <tr>
+                    <td><strong>${escapeHtml(contact.name)}</strong></td>
+                    <td>${escapeHtml(contact.email)}</td>
+                    <td>${contact.phone ? escapeHtml(contact.phone) : '—'}</td>
+                    <td>${contact.company ? escapeHtml(contact.company) : '—'}</td>
+                    <td><span class="${statusClass}">${contact.status}</span></td>
+                    <td class="action-icons">
+                        <i class="fas fa-edit" data-id="${contact.id}" title="Editar"></i>
+                        <i class="fas fa-trash-alt" data-id="${contact.id}" title="Excluir"></i>
+                    </td>
+                </tr>
+            `;
+        });
+        contactsTableBody.innerHTML = html;
+        // adicionar eventos de editar e excluir dinamicamente
+        document.querySelectorAll('.fa-edit').forEach(icon => {
+            icon.addEventListener('click', (e) => {
+                const id = parseInt(icon.getAttribute('data-id'));
+                startEditContact(id);
+            });
+        });
+        document.querySelectorAll('.fa-trash-alt').forEach(icon => {
+            icon.addEventListener('click', (e) => {
+                const id = parseInt(icon.getAttribute('data-id'));
+                deleteContactById(id);
+            });
+        });
+    }
+
+    // Função para escapar HTML
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+            return c;
+        });
+    }
+
+    // Reset do formulário (modo de criação)
+    function resetFormToAddMode() {
+        document.getElementById('contactForm').reset();
+        editMode = false;
+        currentEditId = null;
+        submitBtn.innerHTML = '<i class="fas fa-save"></i> Adicionar';
+        formTitleSpan.innerText = 'Novo Contato';
+        // opcional limpar validação visual
+        nameInput.style.borderColor = '';
+        emailInput.style.borderColor = '';
+    }
+
+    // Preencher formulário para edição
+    function startEditContact(id) {
+        const contact = contacts.find(c => c.id === id);
+        if (!contact) return;
+        editMode = true;
+        currentEditId = id;
+        nameInput.value = contact.name;
+        emailInput.value = contact.email;
+        phoneInput.value = contact.phone || '';
+        companyInput.value = contact.company || '';
+        statusSelect.value = contact.status;
+        submitBtn.innerHTML = '<i class="fas fa-pen"></i> Atualizar';
+        formTitleSpan.innerText = 'Editar Contato';
+        // rolar suavemente para o formulário
+        document.querySelector('.form-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    // validar campos obrigatórios e email
+    function validateForm() {
+        if (!nameInput.value.trim()) {
+            alert("Informe o nome do cliente.");
+            nameInput.focus();
+            return false;
+        }
+        const email = emailInput.value.trim();
+        if (!email) {
+            alert("E-mail é obrigatório.");
+            emailInput.focus();
+            return false;
+        }
+        const emailRegex = /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            alert("Digite um e-mail válido (ex: nome@dominio.com).");
+            emailInput.focus();
+            return false;
+        }
+        return true;
+    }
+
+    // Adicionar ou atualizar contato
+    function handleSubmit(e) {
+        e.preventDefault();
+        if (!validateForm()) return;
+
+        const name = nameInput.value.trim();
+        const email = emailInput.value.trim();
+        const phone = phoneInput.value.trim();
+        const company = companyInput.value.trim();
+        const status = statusSelect.value;
+
+        if (editMode && currentEditId) {
+            // Atualizar contato existente
+            const index = contacts.findIndex(c => c.id === currentEditId);
+            if (index !== -1) {
+                contacts[index] = {
+                    ...contacts[index],
+                    name: name,
+                    email: email,
+                    phone: phone,
+                    company: company,
+                    status: status
+                };
+                saveToLocalStorage();
+                resetFormToAddMode();
+                updateAllAndRender();
+            } else {
+                alert("Erro: contato não encontrado para atualização.");
+            }
+        } else {
+            // Criar novo contato
+            const newId = Date.now();
+            const newContact = {
+                id: newId,
+                name: name,
+                email: email,
+                phone: phone,
+                company: company,
+                status: status
+            };
+            contacts.push(newContact);
+            saveToLocalStorage();
+            resetFormToAddMode();
+            updateAllAndRender();
+        }
+    }
+
+    // Excluir contato
+    function deleteContactById(id) {
+        const contactExists = contacts.find(c => c.id === id);
+        if (!contactExists) return;
+        const confirmDelete = confirm(`Tem certeza que deseja excluir ${contactExists.name}?`);
+        if (confirmDelete) {
+            contacts = contacts.filter(c => c.id !== id);
+            saveToLocalStorage();
+            // Se estava editando este contato, resetar modo edição
+            if (editMode && currentEditId === id) {
+                resetFormToAddMode();
+            }
+            updateAllAndRender();
+        }
+    }
+
+    // Função que atualiza estatísticas, tabela e mantém estado dos filtros
+    function updateAllAndRender() {
+        updateStats();
+        renderTable();
+    }
+
+    // Aplicar filtros e re-renderizar (mantém estatísticas)
+    function applyFiltersAndRender() {
+        renderTable();  // a tabela já usa os valores atuais de searchInput e statusFilter
+    }
+
+    // Limpar filtros (texto e status)
+    function resetFilters() {
+        searchInput.value = '';
+        statusFilter.value = 'all';
+        applyFiltersAndRender();
+    }
+
+    // Restaurar dados de exemplo (substitui contatos)
+    function resetToSampleData() {
+        if (confirm("⚠️ Isso irá substituir todos os contatos atuais pelos exemplos. Deseja continuar?")) {
+            contacts = [
+                { id: 201, name: "Ana Souza", email: "ana.souza@inovatech.com", phone: "(11) 91234-5678", company: "InovaTech", status: "Ativo" },
+                { id: 202, name: "Carlos Lima", email: "carlos.lima@solucoesweb.com", phone: "(21) 98765-4321", company: "Soluções Web", status: "Lead" },
+                { id: 203, name: "Mariana Costa", email: "mariana.costa@mktdigital.com", phone: "(31) 99876-5432", company: "Marketing Digital", status: "Inativo" },
+                { id: 204, name: "Rafael Mendes", email: "rafael@nexus.com", phone: "(41) 98888-7777", company: "Nexus Group", status: "Ativo" },
+                { id: 205, name: "Juliana Tavares", email: "ju.tavares@creative.com", phone: "(85) 99988-7766", company: "Creative Studio", status: "Lead" }
+            ];
+            saveToLocalStorage();
+            resetFormToAddMode();
+            resetFilters();   // limpa busca e filtro de status
+            updateAllAndRender();
+        }
+    }
+
+    // Eventos iniciais e observadores
+    function bindEvents() {
+        document.getElementById('contactForm').addEventListener('submit', handleSubmit);
+        cancelEditBtn.addEventListener('click', () => {
+            resetFormToAddMode();
+        });
+        searchInput.addEventListener('input', () => {
+            applyFiltersAndRender();
+        });
+        statusFilter.addEventListener('change', () => {
+            applyFiltersAndRender();
+        });
+        clearFiltersBtn.addEventListener('click', resetFilters);
+        resetDemoBtn.addEventListener('click', resetToSampleData);
+    }
+
+    // inicialização
+    function init() {
+        loadFromLocalStorage();
+        bindEvents();
+        updateStats();
+        renderTable();
+        // garantir que ao carregar, formulário em modo padrão
+        resetFormToAddMode();
+    }
+
+    init();
+</script>
+</body>
+</html>
